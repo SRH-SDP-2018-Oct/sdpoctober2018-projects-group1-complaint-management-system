@@ -52,7 +52,7 @@ public class DashboardDao {
 			entityManager.getTransaction().commit();
 
 		} catch (Exception e) {
-			System.out.println("Ticket not created!");
+			System.out.println("Ticket not created!"+e);
 		}
 
 	}
@@ -83,18 +83,7 @@ public class DashboardDao {
 		return (List<ServiceRequest>) query.getResultList();
 	}
 
-	
-	
-	//Keep for now. Can remove later
-	/*public void updateTicket(int id, String comment) {
 
-		entityManager.getTransaction().begin();
-		ServiceRequest serviceRequest = entityManager.find(ServiceRequest.class, id);
-		serviceRequest.setUpdatedComment(comment);
-		entityManager.getTransaction().commit();
-		System.out.println("Ticket updated successfully");
-
-	}*/
 
 	public void closeTicket(int id) {
 		entityManager.getTransaction().begin();
@@ -107,8 +96,12 @@ public class DashboardDao {
 			resolution.setFinishedTime(new Time(date.getTime()));
 			resolution.setResolutiondate(date);
 		}
-		Technician tech=serviceRequest.getAssignmentjunctions().get(0).getTechnician();
-		tech.setOpenTickets(tech.getOpenTickets()-1);
+		List<AssignmentJunction> junctions=serviceRequest.getAssignmentjunctions();
+		for(AssignmentJunction as:junctions) {
+			Technician technician=as.getTechnician();
+			technician.setOpenTickets(technician.getOpenTickets()-1);
+			technician.setTotalTickets(technician.getTotalTickets()+1);
+		}
 		entityManager.getTransaction().commit();
 		System.out.println("Ticket closed");
 		
@@ -202,7 +195,7 @@ public class DashboardDao {
 		}
 
 		catch (Exception e) {
-			System.out.println("Ticket solution not updated ");
+			System.out.println("\n\n--- Ticket solution not updated ---\n\n");
 		}
 		
 	}
@@ -210,9 +203,9 @@ public class DashboardDao {
 	public void setFeedback(int resolutionId, String response) {
 		entityManager.getTransaction().begin();
 		Resolution resolution = entityManager.find(Resolution.class, resolutionId);
-		resolution.setFeedback(response);;
+		resolution.setFeedback(response);
 		entityManager.getTransaction().commit();
-		System.out.println("Reply posted successfully!");
+		System.out.println("\n\n--- Reply posted successfully! ---\n\n");
 		
 	}
 	

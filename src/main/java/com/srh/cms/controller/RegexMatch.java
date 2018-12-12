@@ -4,15 +4,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegexMatch {
-	String emailRegex = "^(.+)@(.+)$";
-	//String passwordRegex="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$";
 	
+	String emailRegex = "^(.+)@(.+)$";	
 	 
 	
 	public boolean checkMail(String email){
-	Pattern pattern = Pattern.compile(emailRegex);
-	Matcher matcher = pattern.matcher(email);
-    return matcher.matches();
+		Pattern pattern = Pattern.compile(emailRegex);
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
 	}
 	
 	
@@ -20,5 +19,5 @@ public class RegexMatch {
 		Pattern pattern = Pattern.compile(emailRegex);
 		Matcher matcher = pattern.matcher(password);
 	    return matcher.matches() ;
-		}
+	}
 }
